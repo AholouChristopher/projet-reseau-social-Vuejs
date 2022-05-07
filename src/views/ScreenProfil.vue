@@ -1,20 +1,21 @@
 <template>
-  <div class="home">
+  <div class="profil">
     <HeaderComponant/>
-    <LoginComponent/>
+    <ProfilComponent/>
+    <p @click="getCounter">voici mon conmpte {{counter}}</p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HeaderComponant from '@/components/HeaderComponant.vue'
-import LoginComponent from '@/components/LoginComponent.vue'
+import ProfilComponent from '@/components/ProfilComponent.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'ScreenProfil',
   components: {
     HeaderComponant,
-    LoginComponent
-  }
+    ProfilComponent
+  }  
 }
 </script>

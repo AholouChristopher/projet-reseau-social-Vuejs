@@ -8,6 +8,24 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/signup',
+    name: 'signup',
+    component: () => import(/* webpackChunkName: "signup" */ '../views/ScreenSignup.vue')
+
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import(/* webpackChunkName: "chat" */ '../views/ScreenChat.vue')
+
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ScreenProfil.vue')
+
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting

@@ -1,20 +1,20 @@
 <template>
-  <div class="home">
+  <div class="sigup">
     <HeaderComponant/>
-    <LoginComponent/>
+    <SignupComponent/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HeaderComponant from '@/components/HeaderComponant.vue'
-import LoginComponent from '@/components/LoginComponent.vue'
+import SignupComponent from '@/components/SignupComponent.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'ScreenSignup',
   components: {
     HeaderComponant,
-    LoginComponent
+    SignupComponent
   }
 }
 </script>
