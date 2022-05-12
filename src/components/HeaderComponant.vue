@@ -3,16 +3,16 @@
         <div class="left-nav">
             <ul>
                 <li>
-                     <router-link to="/chat">Chat</router-link>
+                     <router-link to="/chat" v-if="login">Chat</router-link>
                 </li>
                 <li>
-                    <router-link to="/profile">Profil</router-link>
+                    <router-link to="/profile" v-if="login">Profil</router-link>
                 </li>
             </ul>
         </div>
         <div class="logo">
             <div class="logo-image">
-                <img alt="Flame logo" src="../assets/logos/icon.png">
+                <img alt="Flame logo" src="../assets/logos/icon-removebg-preview.png">
             </div>
             <div class="logo-text">
                 <h1> Groupomania</h1>
@@ -22,13 +22,13 @@
         <div class="right-nav">
             <ul>
                 <li>
-                    <router-link to="/signup">SIGNUP</router-link>
+                    <router-link v-if="!login" to="/signup" >SIGNUP</router-link>
                 </li>
                 <li>
-                    <router-link to="/">LOGIN</router-link>
+                    <router-link v-if="!login" to="/">LOGIN</router-link>
                 </li>
                 <li>
-                    <a>LOGOUT</a>
+                    <v-btn v-if="login" @click="logout">LOGOUT</v-btn>  
                 </li>
             </ul>
         </div>
@@ -37,8 +37,26 @@
 
 <script>
 export default {
-  name: 'HeaderComponent'
+  name: 'HeaderComponent',
+  data(){
+    return{
+      login: false 
+    }
+  },
+  created (){
+      let token = localStorage.getItem('token');
+      if(token){ this.login = "true" }
+      console.log(this.login)
+    },
+  methods:{
+    logout: function(){
+      localStorage.clear();
+      this.$router.push("/");
+    }
+  }
+  
 }
+
 </script>
 
 <style scoped>

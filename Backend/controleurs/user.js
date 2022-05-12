@@ -25,9 +25,11 @@ exports.signin = (req, res, next ) => {
                     bcrypt.compare(req.body.password, result.password)
                     .then(valid => {
                             if (!valid) {
-                                return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                                return res.status(401).json({ error: 'Mot de passe ou email incorrect !' });
                             }
                             return res.status(200).json({
+                                userId: result.id,
+                                name:result.username,
                                 token: jwt.sign(
                                     {userId: result.id},
                                     'RANDOM_TOKEN_SECRET',
@@ -54,7 +56,6 @@ exports.signin = (req, res, next ) => {
 };
 
 exports.signup =  (req, res, next ) =>  {
-    console.log(" tu es renter dans la route sgnup! "); 
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             post = { paswword:hash, email:req.body.email, name:req.body.name};
@@ -79,9 +80,9 @@ exports.signup =  (req, res, next ) =>  {
                 ]], function(err, responseDdd, fields){
                     /* console.log(responseDdd); */
                         if(err){
-                             throw err;
+                             res.status(500).json({error:err})
                         }else{
-                            console.log(responseDdd)
+                            res.status(200).json()
                             db.end(); ;
                         }
             })

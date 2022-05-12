@@ -32,15 +32,21 @@ export default {
     }
   },
   methods: { 
-    signupUser(){
-      axios.post('http://localhost:3000/api/user/signup', this.form)
+    async signupUser(){
+      const data = await  axios.post('http://localhost:3000/api/user/signup', this.form)
         .then((res) => { 
-           axios. get('http://localhost:3000/api/chat', { headers: { authorization: `BEARER ${res.data.token}` } })
-           this.$router.push('/chat');
+            console.log(res.data)
+            this.$router.push("/")
         })
-        .catch((error) => { console.log(error) }) 
+        .catch((error) => { 
+          console.log("Probleme de creation") 
+          console.log(error.response.data.error.sqlMessage) //message d'erreur a afficher dans le front
+        })         
+         
+
       }
     }
+
   
 }
 </script>

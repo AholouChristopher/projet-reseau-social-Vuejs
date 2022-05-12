@@ -2,7 +2,6 @@ const mysql= require("mysql")
 
 
 exports.getAllMessage = (req, res, next )=>{
-    /* console.log("requete pour avoir les message reçu") */
     const db = mysql.createConnection({
         host : '127.0.0.1', //localhost
         user : 'root', //nom_utilisateur
@@ -10,17 +9,16 @@ exports.getAllMessage = (req, res, next )=>{
         database : "groupomania" // nom_BDD
     });
     
-db.connect(function(err){
-    if(err){
-        console.log("Connexion à Mysql échoué !")
-        throw err;
-    }else{
-        console.log("Connexion à Mysql reussi !");
-    }
-})  
+    db.connect(function(err){
+        if(err){
+            console.log("Connexion à Mysql échoué !")
+            throw err;
+        }else{
+            console.log("Connexion à Mysql reussi !");
+        }
+    })  
 
-    db.query('SELECT * FROM message', function(err, responseDdd, fields){
-            /* console.log(responseDdd); */
+    db.query('SELECT * FROM message ORDER BY userid  ', function(err, responseDdd, fields){
             if(!err){
                  res.send(responseDdd).status(200);
             }else{console.log(err);}
@@ -30,8 +28,14 @@ db.connect(function(err){
 };
 
 exports.createMessage = (req, res, next ) =>{
-    var  post   = { description : req.body.newMessage ,  name : req.body.name, imageUrl:null, like:0, usersLiked:null,usersDisliked:null} ;  
-    console.log(post);
+    var  post   = { description : req.body.newMessage ,  name : req.body.name, imageUrl:req.file } ;  
+     
+    if (req.file) {
+        post.imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+      } 
+
+    console.log(post)
+
 
     const db = mysql.createConnection({
         host : '127.0.0.1', //localhost
@@ -58,8 +62,8 @@ exports.createMessage = (req, res, next ) =>{
         post.usersLiked,
         post.usersDisliked,        
     ]], function(err, responseDdd, fields){
-            /* console.log(responseDdd); */
-        if(err){throw err;}else{console.log(responseDdd);}
+    
+        if(err){throw err;}else{ console.log("envoyé a la bbd")}
      })
 
     db.end();

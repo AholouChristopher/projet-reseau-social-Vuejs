@@ -29,12 +29,18 @@ export default {
   },
   methods: { 
     signinUser(){
-      let data = axios.post('http://localhost:3000/api/user/signin', this.form)
+       axios.post('http://localhost:3000/api/user/signin', this.form)
         .then( (res) =>  {  
-          axios. get('http://localhost:3000/api/chat', { headers: { authorization: `BEARER ${res.data.token}` } })
+          axios. get(`http://localhost:3000/api/chat?id=${res.data.userId}`, { headers: { authorization: `BEARER ${res.data.token}` } })
+         
+          localStorage.setItem('userId',res.data.userId );
+          localStorage.setItem('token',res.data.token );
+          localStorage.setItem('userName',res.data.name);
+
           this.$router.push('/chat');
         })
-        .catch((error) => { console.log(error) })
+        .catch((err) => { 
+          console.log(err.response.data.error) }) // retour de l'erreur a afficher.
     }} 
 }
 </script>

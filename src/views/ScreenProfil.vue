@@ -2,7 +2,6 @@
   <div class="profil">
     <HeaderComponant/>
     <ProfilComponent/>
-    <p @click="getCounter">voici mon conmpte {{counter}}</p>
   </div>
 </template>
 

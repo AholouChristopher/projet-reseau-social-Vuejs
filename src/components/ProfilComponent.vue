@@ -4,13 +4,7 @@
             <img src="../assets/images/avatar-1.jpg" class="card-img-top" alt="photo de profil">
             <div class="card-body">
                 <p class="card-text">Jean DUPONT</p>
-                <p class="card-text">Vendeur</p>
             </div>
-        </div>
-        <div class="card-description">
-            <p>Age : 26 ans</p>
-            <p>Genre: homme</p>
-            <p>Description metier : je m'occupe des repartion du style</p>
         </div>
     </div>
 </template>

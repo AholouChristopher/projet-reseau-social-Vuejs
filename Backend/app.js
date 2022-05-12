@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 require('dotenv').config();
+const path = require("path");
 
 //declarations process connection a la base de donner
 /* let host = process.env.HOST;
@@ -43,6 +44,9 @@ app.use((req, res, next) => {
 
  
 app.use(bodyParser.json());
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 app.use('/api/chat', chatRoutes);
 app.use('/api/user', userRoutes);
