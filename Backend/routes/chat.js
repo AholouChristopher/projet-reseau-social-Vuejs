@@ -7,10 +7,11 @@ const auth = require ('../middleware/auth');
 const multer = require ('../middleware/multer-config');
 
 
-// route pour avoir les messages
 router.get("/", auth, chatCtrl.getAllMessage);
+router.get("/:name", auth, chatCtrl.getAllMessageName);
 
-// route pour ecrire un message 
 router.post("/", auth, multer, chatCtrl.createMessage );
+router.delete("/", auth, chatCtrl.deleteMessage);
+
 
 module.exports =  router;

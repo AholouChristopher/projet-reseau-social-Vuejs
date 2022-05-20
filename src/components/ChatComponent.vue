@@ -4,7 +4,7 @@
             <div class="card_header">
                 <img src="../assets/images/avatar-5.jpg" alt="avatar" class="size-ico-avatar">
                 <h6 class="card_name">{{items.name}}</h6>
-                <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash">
+                <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash" @click=" deleteMessage(items.userid)">
             </div>
             <div class="card-text">
                 <p> {{items.description}}</p>
@@ -26,8 +26,8 @@
         <!--count&recherche-->
         <div id ="cardCountMessageAndSeach">
             <p id= "Compter-Message"> Messages total: {{count}}</p>
-            <input type="text" placeholder="searchMessage" name="searchMessage" id ="searchMessage" value="">
-            <button type="submit" id="btn-search">Search</button>
+            <input type="text" placeholder="searchMessage" name="searchMessage" id ="searchMessage" v-model="NameSearchMessage">
+            <button type="submit" id="btn-search" @click="searchMessage">Search</button>
         </div>
     </div>
 </template>
@@ -45,26 +45,25 @@ export default {
         name: localStorage.getItem('userName'),
         userfile: '',
         message: [],
-        count: 0
+        count: 0,
+        NameSearchMessage:''
     }
   },
   created (){ this.fetchGetMessage() },
 
   methods: { 
       // Get message 
-    async fetchGetMessage (){
+    fetchGetMessage (){
         let userId = localStorage.getItem('userId');
         let token = localStorage.getItem('token');
-        await axios.get(`http://localhost:3000/api/chat?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
+        axios.get(`http://localhost:3000/api/chat?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
             .then((res)=> { 
                  this.message = res.data
                  this.count = res.data.length 
             }).catch((err)=>{ throw err})
-        console.log(this.message)
-    },
-      
+    },    
     // Post  message 
-   submitMessage(){ 
+    submitMessage(){ 
         let userId = localStorage.getItem('userId');
         let token = localStorage.getItem('token'); 
 
@@ -73,30 +72,38 @@ export default {
         formData.append('newMessage', this.newMessage);
         formData.append('image', this.userfile);
         
-        let form = {newMessage: this.newMessage, name: this.name, image: this.userfile }
-
-        console.log(formData);
-        
-        for (var value of formData.values()) {
-                console.log("X= " + value);
-        }
-
-
         axios.post(`http://localhost:3000/api/chat?id=${userId}`,formData,  { headers: { authorization: `BEARER ${token}` }}  )
-            .then((res) => {  res.status(200) })
+            .then((res) => {  })
             .catch((error) => { console.log(error) }) 
 
         this.newMessage =""
-
-
+        this.fetchGetMessage()
     },
     selectFile(){
               this.userfile = this.$refs.file.files[0];  
     },
-
     //supression d'un message
-    deleteMessage(){
-        axios.delete('url supp message ')
+    deleteMessage(id){
+        let userId = localStorage.getItem('userId');
+        let token = localStorage.getItem('token'); 
+
+        axios.delete(`http://localhost:3000/api/chat?id=${userId}&idMessage=${id}`, { headers: { authorization: `BEARER ${token}` }}  )
+            .then((res)=>{  
+                this.fetchGetMessage()
+             })
+            .catch((err)=>{ console.log(err.response.data.message)})
+
+        /* mettre à jour les message fetchGetMessage*/
+    },
+    // rechercher des message par name 
+    searchMessage(){
+        let userId = localStorage.getItem('userId');
+        let token = localStorage.getItem('token');
+        axios.get(`http://localhost:3000/api/chat/${this.NameSearchMessage}?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
+            .then((res)=> { 
+                 this.message = res.data
+                 this.count = res.data.length 
+            }).catch((err)=>{ throw err})
     }
   
        
