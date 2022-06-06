@@ -12,7 +12,6 @@ let login = process.env.S3_USER_LOGIN_SQL;
 let iphost = process.env.S3_HOST;
 
 
-
 exports.getAllMessage = (req, res, next ) =>{
     const db = mysql.createConnection({
         host : iphost, // S3_HOST localhost
