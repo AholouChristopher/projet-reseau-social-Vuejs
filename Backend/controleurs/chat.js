@@ -1,15 +1,23 @@
 const mysql= require("mysql");
 const fs = require('fs');
+require('dotenv').config();
+
 
 const jwt = require('jsonwebtoken');
 const codeToken = "RANDOM_TOKEN_SECRET";
 
+//process.env
+let password = process.env.S3_PASSWORD_LOGIN_SQL;
+let login = process.env.S3_USER_LOGIN_SQL;
+let iphost = process.env.S3_HOST;
+
+
 
 exports.getAllMessage = (req, res, next ) =>{
     const db = mysql.createConnection({
-        host : '127.0.0.1', // S3_HOST localhost
-        user : 'root', // S3_USER_LOGIN_SQL nom_utilisateur
-        password : 'loulou', // S3_PASSWORD_LOGIN_SQL mot_de_passe_utilisateur
+        host : iphost, // S3_HOST localhost
+        user : login, // S3_USER_LOGIN_SQL nom_utilisateur
+        password : password, // S3_PASSWORD_LOGIN_SQL mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     });
     
@@ -42,9 +50,9 @@ exports.createMessage = (req, res, next ) => {
 
 
     const db = mysql.createConnection({
-        host : '127.0.0.1', //localhost
-        user : 'root', //nom_utilisateur
-        password : 'loulou', //mot_de_passe_utilisateur
+        host : iphost, //localhost
+        user : login, //nom_utilisateur
+        password : password, //mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     });
     
@@ -80,9 +88,9 @@ exports.createMessage = (req, res, next ) => {
     const decodedID = decodedToken.userId;
 
     const db = mysql.createConnection({
-        host : '127.0.0.1', //localhost
-        user : 'root', //nom_utilisateur
-        password : 'loulou', //mot_de_passe_utilisateur
+        host : iphost, //localhost
+        user : login, //nom_utilisateur
+        password : password, //mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     })
 
@@ -149,9 +157,9 @@ exports.createMessage = (req, res, next ) => {
  exports.getAllMessageName = (req, res, next) => {
 
     const db = mysql.createConnection({
-        host : '127.0.0.1', //localhost
-        user : 'root', //nom_utilisateur
-        password : 'loulou', //mot_de_passe_utilisateur
+        host : iphost, //localhost
+        user : login, //nom_utilisateur
+        password : password, //mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     });
     
@@ -175,9 +183,9 @@ exports.createMessage = (req, res, next ) => {
 
  exports.UpdtateLike = (req, res, next) => {
     const db = mysql.createConnection({
-        host : '127.0.0.1', //localhost
-        user : 'root', //nom_utilisateur
-        password : 'loulou', //mot_de_passe_utilisateur
+        host : iphost, //localhost
+        user : login, //nom_utilisateur
+        password : password, //mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     });
     
