@@ -11,6 +11,8 @@ router.get("/", auth, chatCtrl.getAllMessage);
 router.get("/:name", auth, chatCtrl.getAllMessageName);
 
 router.post("/", auth, multer, chatCtrl.createMessage );
+router.post("/like", auth, chatCtrl.UpdtateLike );
+
 router.delete("/", auth, chatCtrl.deleteMessage);
 
 

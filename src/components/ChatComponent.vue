@@ -4,7 +4,10 @@
             <div class="card_header">
                 <img src="../assets/images/avatar-5.jpg" alt="avatar" class="size-ico-avatar">
                 <h6 class="card_name">{{items.name}}</h6>
-                <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash" @click=" deleteMessage(items.userid)">
+                <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash" @click="deleteMessage(items.userid, items.idUser)">
+                <img src="../assets/images/trash.png" alt="like" class ="size-ico-trash" @click="likeMessage(items.userid)">
+                <p> Like : {{items.liked}}</p>
+                <font-awesome-icon icon="fa-solid fa-heart" />
             </div>
             <div class="card-text">
                 <p> {{items.description}}</p>
@@ -83,11 +86,11 @@ export default {
               this.userfile = this.$refs.file.files[0];  
     },
     //supression d'un message
-    deleteMessage(id){
+    deleteMessage(id,UserIdMessage){
         let userId = localStorage.getItem('userId');
         let token = localStorage.getItem('token'); 
 
-        axios.delete(`http://localhost:3000/api/chat?id=${userId}&idMessage=${id}`, { headers: { authorization: `BEARER ${token}` }}  )
+        axios.delete(`http://localhost:3000/api/chat?id=${userId}&idMessage=${id}&UserIdMessage=${UserIdMessage}`, { headers: { authorization: `BEARER ${token}` }}  )
             .then((res)=>{  
                 this.fetchGetMessage()
              })
@@ -104,9 +107,37 @@ export default {
                  this.message = res.data
                  this.count = res.data.length 
             }).catch((err)=>{ throw err})
-    }
-  
-       
+    },
+    likeMessage(id){
+        let userId = localStorage.getItem('userId');
+        let token = localStorage.getItem('token');
+        //this.fetchGetMessage()
+
+        let message = this.message.find(e => e.userid == id)/* recuper avec un find id  */
+        let usersLike = message.usersLiked
+        let NotUserLike = true
+        console.log(usersLike)
+        if( usersLike ){
+            for(var i=0; i<usersLike.length; i++){
+                if(usersLike[i] == userId ){
+                    NotUserLike = false;
+                }
+            }
+        }
+        if( NotUserLike ){
+            axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${id}`, {aime:1}, { headers: { authorization: `BEARER ${token}` }}  )
+                .then((res)=>{  
+                this.fetchGetMessage()
+             })
+            .catch((err)=>{ console.log(err.response.data.message)})
+        }else{
+            axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${id}`, {aime:0}, { headers: { authorization: `BEARER ${token}` }}  )
+                .then((res)=>{  
+                this.fetchGetMessage()
+             })
+            .catch((err)=>{ console.log(err.response.data.message)})
+        }
+    }  
   }    
 
 }
