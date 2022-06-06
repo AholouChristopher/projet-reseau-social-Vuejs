@@ -7,9 +7,9 @@ const codeToken = "RANDOM_TOKEN_SECRET";
 
 exports.getAllMessage = (req, res, next ) =>{
     const db = mysql.createConnection({
-        host : '127.0.0.1', //localhost
-        user : 'root', //nom_utilisateur
-        password : 'loulou', //mot_de_passe_utilisateur
+        host : '127.0.0.1', // S3_HOST localhost
+        user : 'root', // S3_USER_LOGIN_SQL nom_utilisateur
+        password : 'loulou', // S3_PASSWORD_LOGIN_SQL mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
     });
     
@@ -22,7 +22,7 @@ exports.getAllMessage = (req, res, next ) =>{
         }
     })  
 
-    db.query('SELECT * FROM message ORDER BY userid  ', function(err, responseDdd, fields){
+    db.query('SELECT * FROM message ORDER BY idMessage  ', function(err, responseDdd, fields){
             if(!err){
                  res.send(responseDdd).status(200);
             }else{console.log(err);}
@@ -94,10 +94,8 @@ exports.createMessage = (req, res, next ) => {
             console.log("Connexion à Mysql reussi !");
         }
     })
-
-
     // recherche du name de l'idDuMesssage 
-   /* db.query(`SELECT * FROM message WHERE userid = ${req.query.idMessage}`, function(err, responseDdd, fields){
+   /* db.query(`SELECT * FROM message WHERE idMessage = ${req.query.idMessage}`, function(err, responseDdd, fields){
         if(!err){
            let message = responseDdd[0];
             //recherche du name de l'user
@@ -106,7 +104,7 @@ exports.createMessage = (req, res, next ) => {
                     let user = responseDdd2[0]
                     //comparaison pour supression
                      if( user.username == message.name ){
-                        db.query(`DELETE FROM message WHERE userid = ${req.query.idMessage}`,
+                        db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
                             function(err, responseDdd3, fields){
                                 if(!err){
                                     try{
@@ -130,7 +128,7 @@ exports.createMessage = (req, res, next ) => {
         }
     })*/
     if( req.query.UserIdMessage == req.query.id ){
-        db.query(`DELETE FROM message WHERE userid = ${req.query.idMessage}`,
+        db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
             function(err, responseDdd3, fields){
                 if(!err){
                     try{
@@ -193,7 +191,7 @@ exports.createMessage = (req, res, next ) => {
     })
     console.log(req.body.aime)
     if(req.body.aime == 1){
-        db.query(`UPDATE message SET usersLiked = JSON_ARRAY_APPEND( usersLiked ,'$' ,${req.query.id}), liked = liked +1 WHERE userid = ${req.query.idMessage}`,
+        db.query(`UPDATE message SET usersLiked = JSON_ARRAY_APPEND( usersLiked ,'$' ,${req.query.id}), liked = liked +1 WHERE idMessage = ${req.query.idMessage}`,
         function(err, responseDdd3, fields){
             if(!err){
                         res.status(200).json({ message:' tu as like '});
@@ -205,7 +203,7 @@ exports.createMessage = (req, res, next ) => {
     if(req.body.aime == 0){
         console.log("dislike")
 
-        db.query(`SELECT * from message WHERE userid = ${req.query.idMessage} `,function(err, responseDdd3, fields){
+        db.query(`SELECT * from message WHERE idMessage = ${req.query.idMessage} `,function(err, responseDdd3, fields){
             var TabElementUserLiked = JSON.parse(responseDdd3[0].usersLiked);
             
             const indexElementASupp = TabElementUserLiked.indexOf(parseInt(req.query.id))
@@ -213,7 +211,7 @@ exports.createMessage = (req, res, next ) => {
                 TabElementUserLiked.splice(indexElementASupp,1);
             }
             var TabElementUserLikedJSON =  JSON.stringify(TabElementUserLiked)
-            db.query(`UPDATE message SET usersLiked = '${TabElementUserLikedJSON}' , liked = liked -1 WHERE userid = ${req.query.idMessage}`,
+            db.query(`UPDATE message SET usersLiked = '${TabElementUserLikedJSON}' , liked = liked -1 WHERE idMessage = ${req.query.idMessage}`,
                 function(err, responseDdd4, fields){
                 if(err){
                     console.log(err);
