@@ -5,9 +5,8 @@
                 <img src="../assets/images/avatar-5.jpg" alt="avatar" class="size-ico-avatar">
                 <h6 class="card_name">{{items.name}}</h6>
                 <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash" @click="deleteMessage(items.userid, items.idUser)">
-                <img src="../assets/images/trash.png" alt="like" class ="size-ico-trash" @click="likeMessage(items.userid)">
-                <p> Like : {{items.liked}}</p>
-                <font-awesome-icon icon="fa-solid fa-heart" />
+                <img src="../assets/images/coeur.webp" alt="like" class ="size-ico-coeur" @click="likeMessage(items.userid)">
+                 {{items.liked}}
             </div>
             <div class="card-text">
                 <p> {{items.description}}</p>
@@ -186,7 +185,9 @@ export default {
         font-size: 18px;
         font-weight: bold;
     }
-    
+     .size-ico-coeur{
+        height: 40px;
+     }
      .size-ico-trash
     {
         height: 20px;
