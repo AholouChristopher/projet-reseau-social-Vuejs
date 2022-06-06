@@ -1,14 +1,20 @@
 const mysql= require("mysql");
 const bcrypt= require("bcrypt");
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
+
+let password = process.env.S3_PASSWORD_LOGIN_SQL;
+let login = process.env.S3_USER_LOGIN_SQL;
+let iphost = process.env.S3_HOST;
 
 exports.signin = (req, res, next ) => {
         post = { email:req.body.email, password: req.body.password}                            
 
     const db = mysql.createConnection({
-                host : '127.0.0.1', //localhost
-                user : 'root', //nom_utilisateur
-                password : 'loulou', //mot_de_passe_utilisateur
+                host : iphost, //localhost
+                user : login, //nom_utilisateur
+                password : password, //mot_de_passe_utilisateur
                 database : "groupomania" // nom_BDD
             }); 
             db.connect(function(err){
@@ -41,17 +47,6 @@ exports.signin = (req, res, next ) => {
                      if(err){throw err}
                  }
             )
-    
-
-
-    
-  //  db.query('SELECT * FROM message', function(err, responseDdd, fields){
-            //console.log(responseDdd); 
-            //if(!err){
-            //     res.send(responseDdd).status(200);
-           // }else{console.log(err);}
-    // }) 
-
     db.end();
 };
 
@@ -60,9 +55,9 @@ exports.signup =  (req, res, next ) =>  {
         .then(hash => {
             post = { paswword:hash, email:req.body.email, name:req.body.name};
             const db = mysql.createConnection({
-                host : '127.0.0.1', //localhost
-                user : 'root', //nom_utilisateur
-                password : 'loulou', //mot_de_passe_utilisateur
+                host : iphost, //localhost
+                user : login, //nom_utilisateur
+                password : password, //mot_de_passe_utilisateur
                 database : "groupomania" // nom_BDD
             }); 
             db.connect(function(err){

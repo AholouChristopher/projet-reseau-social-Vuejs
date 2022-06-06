@@ -187,8 +187,7 @@ exports.createMessage = (req, res, next ) => {
         user : login, //nom_utilisateur
         password : password, //mot_de_passe_utilisateur
         database : "groupomania" // nom_BDD
-    });
-    
+    });  
     db.connect(function(err){
         if(err){
             console.log("Connexion à Mysql échoué !")
@@ -232,6 +231,5 @@ exports.createMessage = (req, res, next ) => {
                 console.log(err);}
         }) 
     }
-
-    
+   
  }
