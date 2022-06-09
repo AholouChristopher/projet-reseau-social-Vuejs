@@ -75,11 +75,12 @@ export default {
         formData.append('image', this.userfile);
         
         axios.post(`http://localhost:3000/api/chat?id=${userId}`,formData,  { headers: { authorization: `BEARER ${token}` }}  )
-            .then((res) => {  })
+            .then((res) => {})
             .catch((error) => { console.log(error) }) 
-
         this.newMessage =""
+        this.$refs.file.files[0] =null
         this.fetchGetMessage()
+
     },
     selectFile(){
               this.userfile = this.$refs.file.files[0];  

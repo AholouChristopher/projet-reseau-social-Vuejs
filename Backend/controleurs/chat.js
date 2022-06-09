@@ -101,55 +101,24 @@ exports.createMessage = (req, res, next ) => {
             console.log("Connexion à Mysql reussi !");
         }
     })
-    // recherche du name de l'idDuMesssage 
-   /* db.query(`SELECT * FROM message WHERE idMessage = ${req.query.idMessage}`, function(err, responseDdd, fields){
-        if(!err){
-           let message = responseDdd[0];
-            //recherche du name de l'user
-            db.query(`SELECT * FROM user WHERE id = ${decodedID}`, function(err, responseDdd2, fields){
-                if(!err){
-                    let user = responseDdd2[0]
-                    //comparaison pour supression
-                     if( user.username == message.name ){
-                        db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
-                            function(err, responseDdd3, fields){
-                                if(!err){
-                                    try{
-                                        const filename = message.imageUrl.split('/images')[1] 
-                                        fs.unlink(`./images/${filename}`, () => { 
-                                            res.status(200).json({ message:'supression du message'});
-                                        })
-                                    }catch{ res.status(200).json({ message:'supression du message'});}
-                                }else{
-                                    console.log(err);
-                                }
-                             }) 
-                    }else{ res.status(401).json({ message: 'vous ne pouvez pas supprimer ce message'}); }
-
-                }else{
-                    console.log(err);
-                }
-            })
-        }else{
-            console.log(err);
-        }
-    })*/
     if( req.query.UserIdMessage == req.query.id ){
-        db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
-            function(err, responseDdd3, fields){
-                if(!err){
-                    try{
-                        const filename = message.imageUrl.split('/images')[1] 
-                        fs.unlink(`./images/${filename}`, () => { 
-                            res.status(200).json({ message:'supression du message'});
-                        })
-                    }catch{ res.status(200).json({ message:'supression du message'});}
-                }else{
-                    console.log(err);
+        db.query(`SELECT * FROM message WHERE idMessage = ${req.query.idMessage}`, function(err, responseDdd2, fields){
+            db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
+                function(err, responseDdd3, fields){
+                    if(!err){
+                        try{
+                            const filename = responseDdd2[0].imageUrl.split('/images')[1] 
+                            fs.unlink(`./images/${filename}`, () => { 
+                                res.status(200).json({ message:'supression du message'});
+                            })
+                        }catch{ res.status(200).json({ message:'supression du message'});}
+                    }else{
+                        console.log(err);
+                    }
                 }
-             }) 
+            )
+        }) 
     }else{ res.status(401).json({ message: 'vous ne pouvez pas supprimer ce message'}); }
-
 
 };
 
@@ -207,8 +176,6 @@ exports.createMessage = (req, res, next ) => {
             })
     }
     if(req.body.aime == 0){
-        console.log("dislike")
-
         db.query(`SELECT * from message WHERE idMessage = ${req.query.idMessage} `,function(err, responseDdd3, fields){
             var TabElementUserLiked = JSON.parse(responseDdd3[0].usersLiked);
             

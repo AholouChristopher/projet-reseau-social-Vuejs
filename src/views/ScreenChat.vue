@@ -2,7 +2,7 @@
 <template>
   <div class="chat" >
     <HeaderComponant/>
-    <ChatComponent  />
+    <ChatComponent />
   </div>
 </template>
 

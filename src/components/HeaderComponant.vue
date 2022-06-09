@@ -71,7 +71,7 @@ nav{
   display: flex;
   padding: 20px;
   justify-content: space-between;
-  border-bottom: thin solid black;
+  border-bottom: 4px solid #FD2D01;
 }
 
 h1 {
@@ -121,7 +121,7 @@ li {
 }
 
 a {
-  color: black;
+  color: #4E5166;
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
