@@ -5,7 +5,7 @@
                 <img src="../assets/images/avatar-5.jpg" alt="avatar" class="size-ico-avatar">
                 <h6 class="card_name">{{items.name}}</h6>
                 <img src="../assets/images/trash.png" alt="supprimer" class ="size-ico-trash" @click="deleteMessage(items.idMessage, items.idUser)">
-                <img src="../assets/images/coeur.webp" alt="like" class ="size-ico-coeur" @click="likeMessage(items.idMessage)">
+                <i class="fas fa-heart size-ico-coeur" alt="like" @click="likeMessage(items.idMessage)"></i>
                  {{items.liked}}
             </div>
             <div class="card-text">
@@ -19,8 +19,8 @@
                 <div class="form-group">
                     <label for="name">{{name}}</label>
                 </div>
-                <textarea id="newMessage" name="newMessage" placeholder="add multiple lines" v-model="newMessage"></textarea>
-                <input type="file" ref="file" name="userfile" id="userfile" @change="selectFile" class="inputFile">
+                <textarea aria-label="Ecrit ton message là" id="newMessage" name="newMessage" placeholder="add multiple lines" v-model="newMessage"></textarea>
+                <input aria-label="choisis ton fichier à envoyer" type="file" ref="file" name="userfile" id="userfile" @change="selectFile" class="inputFile">
                 <img class="imgStyle" src="../assets/images/avatar-5.jpg" v-show="falsed">
                 <button type="submit"  class="btn-add">Envoyer</button>
             </div>
@@ -55,12 +55,13 @@ export default {
 
   methods: { 
       // Get message 
-    fetchGetMessage (){
+    fetchGetMessage(){
         let userId = localStorage.getItem('userId');
         let token = localStorage.getItem('token');
         axios.get(`http://localhost:3000/api/chat?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
             .then((res)=> { 
                  this.message = res.data
+                 console.log(res.data)
                  this.count = res.data.length 
             }).catch((err)=>{ throw err})
     },    
@@ -78,7 +79,6 @@ export default {
             .then((res) => {})
             .catch((error) => { console.log(error) }) 
         this.newMessage =""
-        this.$refs.file.files[0] =null
         this.fetchGetMessage()
 
     },
@@ -187,7 +187,10 @@ export default {
         font-weight: bold;
     }
      .size-ico-coeur{
-        height: 40px;
+         font-size: 20px;
+         margin: 0 5px 0 5px;
+         color:#3D4371
+       
      }
      .size-ico-trash
     {

@@ -64,14 +64,13 @@ exports.createMessage = (req, res, next ) => {
         }
     })  
 
-    db.query('INSERT INTO message (`description`, `name`, `imageUrl`, `liked`, `usersLiked`, `usersDisliked`, `idUser`) VALUES (?)',
+    db.query('INSERT INTO message (`description`, `name`, `imageUrl`, `liked`, `usersLiked`, `idUser`) VALUES (?)',
     [[
         post.description,
         post.name,
         post.imageUrl,
         0,
         '[]',// Car Mysql bug avec le JSON a null
-        post.usersDisliked,
         req.query.id        
     ]], function(err, responseDdd, fields){
         if(err){throw err;}else{ console.log("envoyé a la bbd")}
@@ -101,24 +100,31 @@ exports.createMessage = (req, res, next ) => {
             console.log("Connexion à Mysql reussi !");
         }
     })
-    if( req.query.UserIdMessage == req.query.id ){
-        db.query(`SELECT * FROM message WHERE idMessage = ${req.query.idMessage}`, function(err, responseDdd2, fields){
-            db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
-                function(err, responseDdd3, fields){
-                    if(!err){
-                        try{
-                            const filename = responseDdd2[0].imageUrl.split('/images')[1] 
-                            fs.unlink(`./images/${filename}`, () => { 
-                                res.status(200).json({ message:'supression du message'});
-                            })
-                        }catch{ res.status(200).json({ message:'supression du message'});}
-                    }else{
-                        console.log(err);
+
+    db.query(`SELECT * FROM user  WHERE id='${req.query.id}'`,                            
+    function(err, rows, fields){
+        if(err){
+            console.log(err);
+        }
+        if( req.query.UserIdMessage == req.query.id || rows[0].admin == '1' ){
+            db.query(`SELECT * FROM message WHERE idMessage = ${req.query.idMessage}`, function(err, responseDdd2, fields){
+                db.query(`DELETE FROM message WHERE idMessage = ${req.query.idMessage}`,
+                    function(err, responseDdd3, fields){
+                        if(!err){
+                            try{
+                                const filename = responseDdd2[0].imageUrl.split('/images')[1] 
+                                fs.unlink(`./images/${filename}`, () => { 
+                                    res.status(200).json({ message:'supression du message'});
+                                })
+                            }catch{ res.status(200).json({ message:'supression du message'});}
+                        }else{
+                            console.log(err);
+                        }
                     }
-                }
-            )
-        }) 
-    }else{ res.status(401).json({ message: 'vous ne pouvez pas supprimer ce message'}); }
+                )
+            }) 
+        }else{ res.status(401).json({ message: 'vous ne pouvez pas supprimer ce message'}); }
+    })
 
 };
 

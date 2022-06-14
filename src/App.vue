@@ -1,6 +1,22 @@
 <template>
-    <router-view></router-view>
+  <router-view></router-view>
+  <FooterComponent/>
+
 </template>
+
+
+<script>
+// @ is an alias to /src
+  import FooterComponent from '@/components/FooterComponent.vue'
+
+  export default {
+    name: 'ScreenChat',
+    components: {
+      FooterComponent
+    }
+    
+  }
+</script>
 
 <style lang="scss">
 #app {
@@ -17,9 +33,13 @@ nav {
   a {
     font-weight: bold;
     color: #2c3e50;
+    font-size: 20px;
+
 
     &.router-link-exact-active {
       color: #FD2D01;
+      font-weight: bold;
+
     }
   }
 }

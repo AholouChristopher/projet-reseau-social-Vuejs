@@ -11,6 +11,7 @@
   import HeaderComponant from '@/components/HeaderComponant.vue'
   import ChatComponent from '@/components/ChatComponent.vue'
 
+
   export default {
     name: 'ScreenChat',
     components: {
