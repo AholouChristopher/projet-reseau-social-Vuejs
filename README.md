@@ -2,7 +2,24 @@
 
 ## Project setup
 ```
-npm install dans une cmd pour lancer le backend dans la racine backend
+BACKEND :
+  npm install
+  npm install express
+  npm install bcrypt
+  npm install jsonwebtoken
+  npm install mysql
+  npm install multer
+  Dans une cmd pour lancer le backend ce mettre a la racine :
+    cd backend 
+    npm start
+
+FRONTEND: 
+  Ce mettre a la racine du projet
+  npm intall 
+  Installer vuejs 
+  npm install axios
+  npm run serve
+
 Creer base  nommé : Groupomania
 Importez le fichier SQL
 ```
