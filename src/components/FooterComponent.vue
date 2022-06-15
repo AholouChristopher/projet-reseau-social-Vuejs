@@ -7,11 +7,11 @@
 <script>
 export default {
   name: 'FooterComponent'
-  
+
 }
 </script>
 
 <style scoped>
 .img{
-width: 20%;} 
+width: 20%;}
 </style>

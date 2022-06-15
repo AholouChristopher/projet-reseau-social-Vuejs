@@ -38,110 +38,107 @@
 
 const axios = require('axios').default
 
-
 export default {
   name: 'ChatComponent',
   data () {
     return {
-        newMessage: '',
-        name: localStorage.getItem('userName'),
-        userfile: '',
-        message: [],
-        count: 0,
-        NameSearchMessage:''
+      newMessage: '',
+      name: localStorage.getItem('userName'),
+      userfile: '',
+      message: [],
+      count: 0,
+      NameSearchMessage: ''
     }
   },
-  created (){ this.fetchGetMessage() },
+  created () { this.fetchGetMessage() },
 
-  methods: { 
-      // Get message 
-    fetchGetMessage(){
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token');
-        axios.get(`http://localhost:3000/api/chat?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
-            .then((res)=> { 
-                 this.message = res.data
-                 console.log(res.data)
-                 this.count = res.data.length 
-            }).catch((err)=>{ throw err})
-    },    
-    // Post  message 
-    submitMessage(){ 
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token'); 
-
-        let formData = new FormData();
-        formData.append('name', this.name);
-        formData.append('newMessage', this.newMessage);
-        formData.append('image', this.userfile);
-        
-        axios.post(`http://localhost:3000/api/chat?id=${userId}`,formData,  { headers: { authorization: `BEARER ${token}` }}  )
-            .then((res) => {})
-            .catch((error) => { console.log(error) }) 
-        this.newMessage =""
-        this.fetchGetMessage()
-
+  methods: {
+    // Get message
+    fetchGetMessage () {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      axios.get(`http://localhost:3000/api/chat?id=${userId}`, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {
+          this.message = res.data
+          console.log(res.data)
+          this.count = res.data.length
+        }).catch((err) => { throw err })
     },
-    selectFile(){
-              this.userfile = this.$refs.file.files[0];  
+    // Post  message
+    submitMessage () {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+
+      const formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('newMessage', this.newMessage)
+      formData.append('image', this.userfile)
+
+      axios.post(`http://localhost:3000/api/chat?id=${userId}`, formData, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {})
+        .catch((error) => { console.log(error) })
+      this.newMessage = ''
+      this.fetchGetMessage()
     },
-    //supression d'un message
-    deleteMessage(idMessage,UserIdMessage){
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token'); 
-
-        axios.delete(`http://localhost:3000/api/chat?id=${userId}&idMessage=${idMessage}&UserIdMessage=${UserIdMessage}`, { headers: { authorization: `BEARER ${token}` }}  )
-            .then((res)=>{  
-                this.fetchGetMessage()
-             })
-            .catch((err)=>{ console.log(err.response.data.message)})
-
-        /* mettre à jour les message fetchGetMessage*/
+    selectFile () {
+      this.userfile = this.$refs.file.files[0]
     },
-    // rechercher des message par name 
-    searchMessage(){
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token');
-        axios.get(`http://localhost:3000/api/chat/${this.NameSearchMessage}?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
-            .then((res)=> { 
-                 this.message = res.data
-                 this.count = res.data.length 
-            }).catch((err)=>{ throw err})
+    // supression d'un message
+    deleteMessage (idMessage, UserIdMessage) {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+
+      axios.delete(`http://localhost:3000/api/chat?id=${userId}&idMessage=${idMessage}&UserIdMessage=${UserIdMessage}`, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {
+          this.fetchGetMessage()
+        })
+        .catch((err) => { console.log(err.response.data.message) })
+
+      /* mettre à jour les message fetchGetMessage */
     },
-    likeMessage(idMsg){
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token');
-        //this.fetchGetMessage()
+    // rechercher des message par name
+    searchMessage () {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      axios.get(`http://localhost:3000/api/chat/${this.NameSearchMessage}?id=${userId}`, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {
+          this.message = res.data
+          this.count = res.data.length
+        }).catch((err) => { throw err })
+    },
+    likeMessage (idMsg) {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      // this.fetchGetMessage()
 
-        let message = this.message.find(e => e.idMessage == idMsg)/* recuper avec un find id  */
-        let usersLike = message.usersLiked
-        let NotUserLike = true
-        let usersLikeJSON = JSON.parse(usersLike)//la donner reçu beug il fallait la transformer en objet javascrip
-        console.log(usersLike)
+      const message = this.message.find(e => e.idMessage === idMsg)/* recuper avec un find id  */
+      const usersLike = message.usersLiked
+      let NotUserLike = true
+      const usersLikeJSON = JSON.parse(usersLike)// la donner reçu beug il fallait la transformer en objet javascrip
+      console.log(usersLike)
 
-
-        if( usersLike ){
-            for(var i=0; i<usersLike.length; i++){
-                if(usersLikeJSON[i] == userId ){
-                    NotUserLike = false;
-                }
-            }
+      if (usersLike) {
+        for (let i = 0; i < usersLike.length; i++) {
+          if (Number(usersLikeJSON[i]) === Number(userId)) {
+            NotUserLike = false
+          }
         }
-        if( NotUserLike ){
-            axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${idMsg}`, {aime:1}, { headers: { authorization: `BEARER ${token}` }}  )
-                .then((res)=>{  
-                this.fetchGetMessage()
-             })
-            .catch((err)=>{ console.log(err.response.data.message)})
-        }else{
-            axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${idMsg}`, {aime:0}, { headers: { authorization: `BEARER ${token}` }}  )
-                .then((res)=>{  
-                this.fetchGetMessage()
-             })
-            .catch((err)=>{ console.log(err.response.data.message)})
-        }
-    }  
-  }    
+      }
+      if (NotUserLike) {
+        axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${idMsg}`, { aime: 1 }, { headers: { authorization: `BEARER ${token}` } })
+          .then((res) => {
+            this.fetchGetMessage()
+          })
+          .catch((err) => { console.log(err.response.data.message) })
+      } else {
+        axios.post(`http://localhost:3000/api/chat/like?id=${userId}&idMessage=${idMsg}`, { aime: 0 }, { headers: { authorization: `BEARER ${token}` } })
+          .then((res) => {
+            this.fetchGetMessage()
+          })
+          .catch((err) => { console.log(err.response.data.message) })
+      }
+    }
+  }
 
 }
 
@@ -175,7 +172,7 @@ export default {
         margin-bottom: 0.75rem;
 
     }
-    
+
     .card-text
     {  margin-top: 0.75rem;
        overflow-wrap: break-word;
@@ -193,19 +190,18 @@ export default {
          font-size: 20px;
          margin: 0 5px 0 5px;
          color:#3D4371
-       
+
      }
      .size-ico-trash
     {
         height: 20px;
-        
+
     }
     .size-ico-avatar
     {
         height: 100px;
         border-radius: 100px;
     }
-   
 
     .inputFile{
         margin: 5px;
@@ -230,7 +226,7 @@ export default {
         padding: 20px;
         justify-content: space-between;
     }
-    
+
     #cardInputNewMessage
     {
         display:flex;
@@ -275,6 +271,5 @@ export default {
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    
 
 </style>

@@ -24,30 +24,27 @@ export default {
   name: 'SignupComponent',
   data () {
     return {
-      form : {
-        name:'',
+      form: {
+        name: '',
         email: '',
-        password: '',
+        password: ''
       }
     }
   },
-  methods: { 
-    async signupUser(){
-      const data = await  axios.post('http://localhost:3000/api/user/signup', this.form)
-        .then((res) => { 
-            console.log(res.data)
-            this.$router.push("/")
+  methods: {
+    async signupUser () {
+      await axios.post('http://localhost:3000/api/user/signup', this.form)
+        .then((res) => {
+          console.log(res.data)
+          this.$router.push('/')
         })
-        .catch((error) => { 
-          console.log("Probleme de creation") 
-          console.log(error.response.data.error.sqlMessage) //message d'erreur a afficher dans le front
-        })         
-         
-
-      }
+        .catch((error) => {
+          console.log('Probleme de creation')
+          console.log(error.response.data.error.sqlMessage) // message d'erreur a afficher dans le front
+        })
     }
+  }
 
-  
 }
 </script>
 

@@ -16,32 +16,34 @@
 <script>
 
 const axios = require('axios').default
- 
+
 export default {
   name: 'LoginComponant',
   data () {
     return {
-      form : {
+      form: {
         email: '',
-        password: '',
+        password: ''
       }
     }
   },
-  methods: { 
-    signinUser(){
-       axios.post('http://localhost:3000/api/user/signin', this.form)
-        .then( (res) =>  {  
-          axios. get(`http://localhost:3000/api/chat?id=${res.data.userId}`, { headers: { authorization: `BEARER ${res.data.token}` } })
-         
-          localStorage.setItem('userId',res.data.userId );
-          localStorage.setItem('token',res.data.token );
-          localStorage.setItem('userName',res.data.name);
+  methods: {
+    signinUser () {
+      axios.post('http://localhost:3000/api/user/signin', this.form)
+        .then((res) => {
+          axios.get(`http://localhost:3000/api/chat?id=${res.data.userId}`, { headers: { authorization: `BEARER ${res.data.token}` } })
 
-          this.$router.push('/chat');
+          localStorage.setItem('userId', res.data.userId)
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('userName', res.data.name)
+
+          this.$router.push('/chat')
         })
-        .catch((err) => { 
-          console.log(err.response.data.error) }) // retour de l'erreur a afficher.
-    }} 
+        .catch((err) => {
+          console.log(err.response.data.error)
+        }) // retour de l'erreur a afficher.
+    }
+  }
 }
 </script>
 

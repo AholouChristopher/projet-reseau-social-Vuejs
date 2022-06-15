@@ -16,36 +16,36 @@
 const axios = require('axios').default
 
 export default {
-    name: 'ProfilComponent',
-    data () {
-        return {
-            user:[]
-        }
-    },
-
-    created(){this.fetchGetOneUser()},
-
-    methods: {
-        fetchGetOneUser(){
-            let userId = localStorage.getItem('userId');
-            let token = localStorage.getItem('token');
-            axios.get(`http://localhost:3000/api/user?id=${userId}`,{ headers: { authorization: `BEARER ${token}` }} )
-                .then((res)=> { 
-                    this.user = res.data
-                    console.log(res.data)
-                }).catch((err)=>{ throw err})
-        },
-        deleteCompte(){
-        let userId = localStorage.getItem('userId');
-        let token = localStorage.getItem('token'); 
-        axios.delete(`http://localhost:3000/api/user?id=${userId}`, { headers: { authorization: `BEARER ${token}` }}  )
-            .then((res)=>{  
-                this.$router.push("/")
-                localStorage.clear();
-              })
-            .catch((err)=>{ console.log(err.response.data.message)})  
-        }
+  name: 'ProfilComponent',
+  data () {
+    return {
+      user: []
     }
+  },
+
+  created () { this.fetchGetOneUser() },
+
+  methods: {
+    fetchGetOneUser () {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      axios.get(`http://localhost:3000/api/user?id=${userId}`, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {
+          this.user = res.data
+          console.log(res.data)
+        }).catch((err) => { throw err })
+    },
+    deleteCompte () {
+      const userId = localStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      axios.delete(`http://localhost:3000/api/user?id=${userId}`, { headers: { authorization: `BEARER ${token}` } })
+        .then((res) => {
+          this.$router.push('/')
+          localStorage.clear()
+        })
+        .catch((err) => { console.log(err.response.data.message) })
+    }
+  }
 }
 </script>
 

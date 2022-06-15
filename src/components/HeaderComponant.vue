@@ -28,7 +28,7 @@
                     <router-link v-if="!login" to="/">LOGIN</router-link>
                 </li>
                 <li>
-                    <v-btn v-if="login" @click="logout">LOGOUT</v-btn>  
+                    <v-btn v-if="login" @click="logout">LOGOUT</v-btn>
                 </li>
             </ul>
         </div>
@@ -38,23 +38,23 @@
 <script>
 export default {
   name: 'HeaderComponent',
-  data(){
-    return{
-      login: false 
+  data () {
+    return {
+      login: false
     }
   },
-  created (){
-      let token = localStorage.getItem('token');
-      if(token){ this.login = "true" }
-      console.log(this.login)
-    },
-  methods:{
-    logout: function(){
-      localStorage.clear();
-      this.$router.push("/");
+  created () {
+    const token = localStorage.getItem('token')
+    if (token) { this.login = 'true' }
+    console.log(this.login)
+  },
+  methods: {
+    logout: function () {
+      localStorage.clear()
+      this.$router.push('/')
     }
   }
-  
+
 }
 
 </script>
