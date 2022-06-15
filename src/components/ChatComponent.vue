@@ -116,10 +116,13 @@ export default {
         let message = this.message.find(e => e.idMessage == idMsg)/* recuper avec un find id  */
         let usersLike = message.usersLiked
         let NotUserLike = true
+        let usersLikeJSON = JSON.parse(usersLike)//la donner reçu beug il fallait la transformer en objet javascrip
         console.log(usersLike)
+
+
         if( usersLike ){
             for(var i=0; i<usersLike.length; i++){
-                if(usersLike[i] == userId ){
+                if(usersLikeJSON[i] == userId ){
                     NotUserLike = false;
                 }
             }

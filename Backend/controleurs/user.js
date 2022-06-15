@@ -27,6 +27,8 @@ exports.signin = (req, res, next ) => {
             })
             db.query(`SELECT * FROM user  WHERE email='${post.email}'`,                            
                 function(err, rows, fields){
+                    console.log(rows)
+                    if(rows.length !=0){
                     for (var i = 0; i < rows.length; i++) {
                         result = rows[i]
                     }
@@ -46,8 +48,10 @@ exports.signin = (req, res, next ) => {
                             });
                      }).catch(error => res.status(500).json({ error }));
                     
-                     if(err){throw err}
-                 }
+                    }else{ 
+                        return res.status(401).json({ error: 'Mot de passe ou email incorrect !' });
+                    }
+                }
             )
     db.end();
 };
