@@ -3,6 +3,8 @@
 ## Project setup
 ```
 npm install dans une cmd pour lancer le backend dans la racine backend
+Creer base  nommé : Groupomania
+Importez le fichier SQL
 ```
 
 ### Compiles and hot-reloads for development
